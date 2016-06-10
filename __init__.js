@@ -117,6 +117,7 @@ var $builtinmodule = function(name) {
 
     for(var i = 0; i < chart.series.length; i++) {
       chart.series[i].legendIndex = chart.series.length - i;
+      chart.series[i].index = chart.series.length - i;
     }
 
     if (renderer) {
