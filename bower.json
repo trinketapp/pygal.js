@@ -8,7 +8,7 @@
   "description": "An in the browser implementation of the pygal python charting library driven by Skulpt",
   "main": "__init__.js",
   "dependencies": {
-    "skulpt": "master",
+    "skulpt": "~0.9.6",
     "jquery": "~2.1.1",
     "highcharts": "~3.0.7"
   },
