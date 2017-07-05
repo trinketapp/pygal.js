@@ -8,6 +8,8 @@ var $builtinmodule = function(name) {
     [86, 194, 214],  [128, 131, 132], [140, 84, 254],  [70, 84, 87]
   ];
 
+  var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke'];
+
   function Chart(options) {
     this._options = options;
     this._data = [];
@@ -157,7 +159,7 @@ var $builtinmodule = function(name) {
           if (stroke) options.stroke = stroke.v;
 
           self.instance = new Chart(options);
-        }, ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke']
+        }, KWARGS
       );
 
       $loc.add = new Sk.builtin.func(function(self, label, values) {
@@ -169,12 +171,13 @@ var $builtinmodule = function(name) {
       });
 
       $loc.render = new Sk.builtin.func(function(self) {
-        var options = Sk.ffi.remapToJs(self.$d);
-        for(var key in options) {
-          if (options.hasOwnProperty(key)) {
-            self.instance._options[key] = options[key];
-          }
+        var i, key;
+
+        for (i = 0; i < KWARGS.length; i++) {
+          key = KWARGS[i];
+          self.instance._options[key] = Sk.ffi.remapToJs(self.tp$getattr(key));
         }
+
         return self.instance.render(renderer);
       });
     }, type, []);
