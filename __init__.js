@@ -171,11 +171,15 @@ var $builtinmodule = function(name) {
       });
 
       $loc.render = new Sk.builtin.func(function(self) {
-        var i, key;
+        var i, key, val;
 
         for (i = 0; i < KWARGS.length; i++) {
           key = KWARGS[i];
-          self.instance._options[key] = Sk.ffi.remapToJs(self.tp$getattr(key));
+          val = self.tp$getattr(key);
+
+          if (typeof val !== "undefined") {
+            self.instance._options[key] = Sk.ffi.remapToJs(val);
+          }
         }
 
         return self.instance.render(renderer);
