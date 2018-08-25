@@ -31,13 +31,10 @@ necessary. Cool.  See it in action on [trinket.io](https://trinket.io/charts).
 
 Install JS dependencies with ```bower install```
 
-Creat a basic html page
-
-```html
-<!-- @TODO: replace with example markup... -->
-```
+Create a basic html page similar to DEMO.html.
 
 Add the pygal.js specific Skulpt configuration options
+
 ```js
 // the domOutput is called whenever the chart is rendered
 // and is expected to append the provided html to the DOM
@@ -62,7 +59,11 @@ Sk.availableWidth = 600;
 Sk.availableHeight = 400;
 ```
 
-Point our browser to your html page and have fun!
+Note: If you use demo.html, you may need to serve it through an HTTP Server
+due to the cross-site script URLs. "python -m SimpleHTTPServer" is one good
+way.
+
+Point your browser to your html page and have fun!
 
 ## Opportunities for contribution
 
@@ -77,6 +78,3 @@ Point our browser to your html page and have fun!
 ## Pygal.js in the wild
 
 [trinket.io](https://trinket.io/charts)
-
-
-

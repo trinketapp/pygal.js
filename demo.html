@@ -1,0 +1,97 @@
+<html>
+<head>
+<script src="http://www.skulpt.org/static/skulpt.min.js" type="text/javascript"></script>
+<script src="http://www.skulpt.org/static/skulpt-stdlib.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+// output functions are configurable.  This one just appends some text
+// to a pre element.
+function outf(text) {
+    var mypre = document.getElementById("output");
+    mypre.innerHTML = mypre.innerHTML + text;
+}
+function builtinRead(x) {
+    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+    return Sk.builtinFiles["files"][x];
+}
+
+// Here's everything you need to run a python program in skulpt
+// grab the code from your textarea
+// get a reference to your pre element for output
+// configure the output function
+// call Sk.importMainWithBody()
+function runit() {
+   var prog = document.getElementById("yourcode").value;
+   var mypre = document.getElementById("output");
+   mypre.innerHTML = '';
+   Sk.pre = "output";
+   Sk.configure({output:outf, read:builtinRead});
+   var myPromise = Sk.misceval.asyncToPromise(function() {
+       return Sk.importMainWithBody("<stdin>", false, prog, true);
+   });
+   myPromise.then(function(mod) {
+       console.log('success');
+   },
+       function(err) {
+       console.log(err.toString());
+   });
+}
+Sk.externalLibraries = {
+  pygal : {
+  path : '__init__.js',
+  dependencies : [
+    'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.2/highcharts.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.2/js/highcharts-more.js'
+  ]}
+};
+Sk.domOutput = function(html) {
+  console.log(html);//-->here get the div tag with no content
+  //return $('body').append(html).children().last();
+  return $('#mycanvas').append(html).children().last();
+};
+$(function (){
+  runit()
+})
+</script>
+
+<h3>Try This</h3>
+<form>
+<textarea id="yourcode" cols="80" rows="30">import pygal
+
+# Our data is a list of series.
+# Each series is a list with a label and a list of data points
+data = [["Firefox", [None, None, 0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1]],
+        ["Chrome",  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3]],
+        ["IE",      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1]],
+        ["Others",  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5]]]
+
+
+# Make a Pygal chart
+stackedline_chart = pygal.StackedLine(fill=True)
+stackedline_chart.title = "Browser usage evolution (in %)"
+stackedline_chart.x_labels = map(str, range(2002, 2013))
+
+# For each series in our data, add label and data points
+for label, data_points in data:
+    stackedline_chart.add(label, data_points)
+
+# Render the chart
+stackedline_chart.render()
+
+# Example modified from the pygal.org documentation
+</textarea><br />
+<button type="button" onclick="runit()">Run</button>
+</form>
+<pre id="output" ></pre>
+<!-- If you want turtle graphics include a canvas -->
+<div id="mycanvas"></div>
+
+</body>
+
+</html>
