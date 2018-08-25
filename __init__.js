@@ -8,7 +8,7 @@ var $builtinmodule = function(name) {
     [86, 194, 214],  [128, 131, 132], [140, 84, 254],  [70, 84, 87]
   ];
 
-  var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke'];
+  var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke', 'x_labels'];
 
   function Chart(options) {
     this._options = options;
@@ -142,7 +142,7 @@ var $builtinmodule = function(name) {
   function createChartType(type, renderer) {
     mod[type] = Sk.misceval.buildClass(mod, function($gbl, $loc) {
       $loc.__init__ = kwfunc(
-        function(trash, self, title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke) {
+        function(trash, self, title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels) {
           var options = {};
           if (title) options.title = title.v;
           if (width) options.width = width.v;
@@ -157,6 +157,7 @@ var $builtinmodule = function(name) {
           if (title_font_size) options.title_font_size = title_font_size.v;
           if (fill) options.fill = fill.v;
           if (stroke) options.stroke = stroke.v;
+          if (x_labels) options.x_labels = x_labels.v;
 
           self.instance = new Chart(options);
         }, KWARGS
