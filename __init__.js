@@ -1,6 +1,51 @@
 var $builtinmodule = function(name) {
+  function fill(arr, val) {
+    if (Array.prototype.fill) {
+      return Array.prototype.fill.bind(arr)(val, arguments[2], arguments[3]);
+    }
+
+    // Steps 1-2.
+    if (arr == null) {
+      throw new TypeError('arr is null or not defined');
+    }
+
+    var O = Object(arr);
+
+    // Steps 3-5.
+    var len = O.length >>> 0;
+
+    // Steps 6-7.
+    var start = arguments[2];
+    var relativeStart = start >> 0;
+
+    // Step 8.
+    var k = relativeStart < 0 ?
+      Math.max(len + relativeStart, 0) :
+      Math.min(relativeStart, len);
+
+    // Steps 9-10.
+    var end = arguments[3];
+    var relativeEnd = end === undefined ?
+      len : end >> 0;
+
+    // Step 11.
+    var final = relativeEnd < 0 ?
+      Math.max(len + relativeEnd, 0) :
+      Math.min(relativeEnd, len);
+
+    // Step 12.
+    while (k < final) {
+      O[k] = value;
+      k++;
+    }
+
+    // Step 13.
+    return O;
+  }
+
+
   var mod = {};
-  
+
   var COLORS = [
     [255, 89, 149],  [182, 227, 84],  [254, 237, 108], [140, 237, 255],
     [158, 111, 254], [137, 156, 161], [248, 248, 242], [191, 70, 70],
@@ -131,10 +176,14 @@ var $builtinmodule = function(name) {
     return '';
   }
 
+  function some(val) {
+    return val && val !== Sk.builtin.none.none$;
+  }
+
   function kwfunc(impl, kwargs) {
     if (kwargs && kwargs.length) {
-      impl.co_kwargs   = true;
       impl.co_varnames = ['__self__'].concat(kwargs);
+      impl.$defaults = fill(new Array(kwargs.length), Sk.builtin.none.none$);
     }
     return new Sk.builtin.func(impl);
   }
@@ -142,22 +191,22 @@ var $builtinmodule = function(name) {
   function createChartType(type, renderer) {
     mod[type] = Sk.misceval.buildClass(mod, function($gbl, $loc) {
       $loc.__init__ = kwfunc(
-        function(trash, self, title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels) {
+        function(self, title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels) {
           var options = {};
-          if (title) options.title = title.v;
-          if (width) options.width = width.v;
-          if (height) options.height = height.v;
-          if (range) options.range = {
+          if (some(title)) options.title = title.v;
+          if (some(width)) options.width = width.v;
+          if (some(height)) options.height = height.v;
+          if (some(range)) options.range = {
             min: range.v[0].v,
             max: range.v[1].v
           };
-          if (include_x_axis) options.include_x_axis = include_x_axis.v;
-          if (x_title) options.x_title = x_title.v;
-          if (y_title) options.y_title = y_title.v;
-          if (title_font_size) options.title_font_size = title_font_size.v;
-          if (fill) options.fill = fill.v;
-          if (stroke) options.stroke = stroke.v;
-          if (x_labels) options.x_labels = x_labels.v;
+          if (some(include_x_axis)) options.include_x_axis = include_x_axis.v;
+          if (some(x_title)) options.x_title = x_title.v;
+          if (some(y_title)) options.y_title = y_title.v;
+          if (some(title_font_size)) options.title_font_size = title_font_size.v;
+          if (some(fill)) options.fill = fill.v;
+          if (some(stroke)) options.stroke = stroke.v;
+          if (some(x_labels)) options.x_labels = x_labels.v;
 
           self.instance = new Chart(options);
         }, KWARGS

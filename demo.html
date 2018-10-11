@@ -1,7 +1,7 @@
 <html>
 <head>
-<script src="http://www.skulpt.org/static/skulpt.min.js" type="text/javascript"></script>
-<script src="http://www.skulpt.org/static/skulpt-stdlib.js" type="text/javascript"></script>
+<script src="bower_components/skulpt/skulpt.js" type="text/javascript"></script>
+<script src="bower_components/skulpt/skulpt-stdlib.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 </head>
@@ -16,10 +16,70 @@ function outf(text) {
     mypre.innerHTML = mypre.innerHTML + text;
 }
 function builtinRead(x) {
-    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-            throw "File not found: '" + x + "'";
-    return Sk.builtinFiles["files"][x];
-}
+    if (Sk.builtinFiles !== undefined && Sk.builtinFiles["files"][x] !== undefined) {
+        return Sk.builtinFiles["files"][x];
+    }
+
+    if (Sk.externalLibraries[x]) {
+        var externalLibraryInfo = Sk.externalLibraries[x];
+        return Sk.misceval.promiseToSuspension(
+            new Promise(function(resolve, reject) {
+                // get the main skulpt extenstion
+                var request = new XMLHttpRequest();
+                request.open("GET", externalLibraryInfo.path);
+                request.onload = function() {
+                    if (request.status === 200) {
+                        resolve(request.responseText);
+                    } else {
+                        reject("File not found: '" + x + "'");
+                    }
+                };
+
+                request.onerror = function() {
+                    reject("File not found: '" + x + "'");
+                }
+
+                request.send();
+            }).then(function (code) {
+                if (!code) {
+                    throw new Sk.builtin.ImportError("Failed to load remote module '" + name + "'");
+                }
+
+                var promise;
+
+                function mapUrlToPromise(path) {
+                    return new Promise(function(resolve, reject) {
+                        scriptElement = document.createElement("script");
+                        scriptElement.type = "text/javascript";
+                        scriptElement.src = path;
+                        scriptElement.async = true
+                        scriptElement.onload = function() {
+                            resolve(true);
+                        }
+
+                        document.body.appendChild(scriptElement);
+                    });
+                }
+
+                if (externalLibraryInfo.loadDepsSynchronously) {
+                    promise = (externalLibraryInfo.dependencies || []).reduce((p, url) => {
+                        return p.then(() => mapUrlToPromise(url));
+                    }, Promise.resolve()); // initial
+                } else {
+                    promise = Promise.all((externalLibraryInfo.dependencies || []).map(mapUrlToPromise));
+                }
+
+                return promise.then(function() {
+                    return code;
+                }).catch(function() {
+                    throw new Sk.builtin.ImportError("Failed to load dependencies required for " + name);
+                });
+            })
+        );
+    }
+
+    throw "File not found '" + x + "'";
+ }
 
 // Here's everything you need to run a python program in skulpt
 // grab the code from your textarea
@@ -43,12 +103,14 @@ function runit() {
    });
 }
 Sk.externalLibraries = {
-  pygal : {
-  path : '__init__.js',
-  dependencies : [
-    'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.2/highcharts.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.2/js/highcharts-more.js'
-  ]}
+  './pygal/__init__.js' : {
+    path : '__init__.js',
+    dependencies : [
+        'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.2/highcharts.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.2/js/highcharts-more.js'
+    ],
+    loadDepsSynchronously: true
+  }
 };
 Sk.domOutput = function(html) {
   console.log(html);//-->here get the div tag with no content
