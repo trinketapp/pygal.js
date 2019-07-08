@@ -224,11 +224,11 @@ var $builtinmodule = function(name) {
         var i, key, val;
 
         for (i = 0; i < KWARGS.length; i++) {
-          key = KWARGS[i];
+          key = new Sk.builtin.str(KWARGS[i]);
           val = self.tp$getattr(key);
 
           if (typeof val !== "undefined") {
-            self.instance._options[key] = Sk.ffi.remapToJs(val);
+            self.instance._options[key.v] = Sk.ffi.remapToJs(val);
           }
         }
 
