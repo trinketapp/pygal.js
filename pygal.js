@@ -147,7 +147,8 @@ class Chart {
 }
 
 class _Line extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = options.fill ? 'area' : 'line';
       return chart;
@@ -157,7 +158,8 @@ class _Line extends Chart {
 export const Line = () => new _Line();
 
 class _StackedLine extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = options.fill ? 'area' : 'line';
       chart.plotOptions = {
@@ -175,7 +177,8 @@ class _StackedLine extends Chart {
 export const StackedLine = () => new _StackedLine();
 
 class _Bar extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = 'column';
       return chart;
@@ -185,7 +188,8 @@ class _Bar extends Chart {
 export const Bar = () => new _Bar();
 
 class _StackedBar extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = 'column';
       chart.plotOptions = {
@@ -200,7 +204,8 @@ class _StackedBar extends Chart {
 export const StackedBar = () => new _StackedBar();
 
 class _HorizontalBar extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = 'bar';
       return chart;
@@ -210,7 +215,8 @@ class _HorizontalBar extends Chart {
 export const HorizontalBar = () => new _HorizontalBar();
 
 class _StackedHorizontalBar extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = 'bar';
       chart.plotOptions = {
@@ -225,7 +231,8 @@ class _StackedHorizontalBar extends Chart {
 export const StackedHorizontalBar = () => new _StackedHorizontalBar();
 
 class _XY extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       if (options.stroke === false) {
         chart.chart.type = 'scatter'
@@ -242,7 +249,8 @@ class _XY extends Chart {
 export const XY = () => new _XY();
 
 class _Radar extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.polar = true;
       chart.chart.type  = 'line';
@@ -269,7 +277,8 @@ class _Radar extends Chart {
 export const Radar = () => new _Radar();
 
 class _Pie extends Chart {
-  constructor() {
+  constructor(...args) {
+    super(...args);
     this.renderer = (options, chart) => {
       chart.chart.type = 'pie';
       const slices       = [];
