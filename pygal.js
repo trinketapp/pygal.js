@@ -35,14 +35,16 @@ class Chart {
   }
 
   add(label, values) {
+    const data = [...toJs(values)].map(v => v || 0);
+
     this._data.unshift({
       name: toJs(label),
-      color: this.#rgba(COLORS[this._data.length%COLORS.length], 0.75),
-      data: [...toJs(values)],
-      marker : {
+      color: this.#rgba(COLORS[this._data.length % COLORS.length], 0.75),
+      data: data,
+      marker: {
         symbol: 'circle'
       },
-      stack : 1
+      stack: 1
     });
 
     return '';
