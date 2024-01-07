@@ -9,125 +9,127 @@ var COLORS = [
 
 var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke', 'x_labels'];
 
-function Chart(options) {
-  this._options = options;
-  this._data = [];
-}
-
-function rgba(rgb, a) {
-  return 'rgba(' + rgb.join(',') + ',' + a + ')';
-}
-
-Chart.prototype.add = function(label, values) {
-  this._data.unshift({
-    name: label,
-    color: rgba(COLORS[this._data.length%COLORS.length], 0.75),
-    data: values,
-    marker : {
-      symbol: 'circle'
-    },
-    stack : 1
-  });
-
-  return '';
-}
-
-Chart.prototype.render = function(renderer) {
-  var options = this._options;
-  var $elem = Sk.domOutput('<div></div>');
-  var title_style = {
-    color: '#FFFFFF'
-  };
-  if (options.title_font_size) {
-    title_style['font-size'] = options.title_font_size + 'px';
+class Chart {
+  constructor(options) {
+    this._options = options;
+    this._data = [];
   }
-  var xPlotLines = [];
-  var yPlotLines = [];
 
-  if (options.range) {
-    yPlotLines.push({
-      value: options.range.min,
-      width: 1,
-      color: '#FFFFFF'
+  add(label, values) {
+    this._data.unshift({
+      name: label,
+      color: this.#rgba(COLORS[this._data.length%COLORS.length], 0.75),
+      data: values,
+      marker : {
+        symbol: 'circle'
+      },
+      stack : 1
     });
+
+    return '';
   }
 
-  var defaultWidth  = Sk.availableWidth || 400;
-  var defaultHeight = Math.min(defaultWidth, Sk.availableHeight || 300);
+  render(renderer) {
+    var options = this._options;
+    var $elem = Sk.domOutput('<div></div>');
+    var title_style = {
+      color: '#FFFFFF'
+    };
+    if (options.title_font_size) {
+      title_style['font-size'] = options.title_font_size + 'px';
+    }
+    var xPlotLines = [];
+    var yPlotLines = [];
 
-  var chart = {
-    chart: {
-      width : options.width  || defaultWidth,
-      height: options.height || defaultHeight,
-      backgroundColor: '#000'
-    },
-    credits: {
-      enabled: false
-    },
-    title: {
-        text: options.title,
-        style : title_style
-    },
-    xAxis: {
-        title: {
-            text: options.x_title || null,
-            style : title_style,
-            margin: 20
-        },
-        categories: options.x_labels,
-        labels : {
-          enabled: options.x_labels ? true : false
-        },
-        tickLength: 0
-    },
-    yAxis: {
-        startOnTick: false,
-        title: {
-            text: options.y_title || null,
-            style : title_style,
-            margin: 20
-        },
-        plotLines: yPlotLines,
-        min : options.include_x_axis
-          ? 0
-          : options.range
-            ? options.range.min
-            : null,
-        max : options.range ? options.range.max : null,
-        gridLineDashStyle : 'ShortDash',
-        gridLineColor: '#DDD',
-        tickLength: 0
-    },
-    legend: {
-        itemStyle : {
-          color : '#FFFFFF'
-        },
-        layout: 'vertical',
-        align: 'left',
-        verticalAlign: 'top',
-        y: 50,
-        borderWidth: 0
-    },
-    labels : {
-      style : {
+    if (options.range) {
+      yPlotLines.push({
+        value: options.range.min,
+        width: 1,
         color: '#FFFFFF'
-      }
-    },
-    series: this._data
-  };
+      });
+    }
 
-  for(var i = 0; i < chart.series.length; i++) {
-    chart.series[i].legendIndex = chart.series.length - i;
-    chart.series[i].index = chart.series.length - i;
+    var defaultWidth  = Sk.availableWidth || 400;
+    var defaultHeight = Math.min(defaultWidth, Sk.availableHeight || 300);
+
+    var chart = {
+      chart: {
+        width : options.width  || defaultWidth,
+        height: options.height || defaultHeight,
+        backgroundColor: '#000'
+      },
+      credits: {
+        enabled: false
+      },
+      title: {
+          text: options.title,
+          style : title_style
+      },
+      xAxis: {
+          title: {
+              text: options.x_title || null,
+              style : title_style,
+              margin: 20
+          },
+          categories: options.x_labels,
+          labels : {
+            enabled: options.x_labels ? true : false
+          },
+          tickLength: 0
+      },
+      yAxis: {
+          startOnTick: false,
+          title: {
+              text: options.y_title || null,
+              style : title_style,
+              margin: 20
+          },
+          plotLines: yPlotLines,
+          min : options.include_x_axis
+            ? 0
+            : options.range
+              ? options.range.min
+              : null,
+          max : options.range ? options.range.max : null,
+          gridLineDashStyle : 'ShortDash',
+          gridLineColor: '#DDD',
+          tickLength: 0
+      },
+      legend: {
+          itemStyle : {
+            color : '#FFFFFF'
+          },
+          layout: 'vertical',
+          align: 'left',
+          verticalAlign: 'top',
+          y: 50,
+          borderWidth: 0
+      },
+      labels : {
+        style : {
+          color: '#FFFFFF'
+        }
+      },
+      series: this._data
+    };
+
+    for(var i = 0; i < chart.series.length; i++) {
+      chart.series[i].legendIndex = chart.series.length - i;
+      chart.series[i].index = chart.series.length - i;
+    }
+
+    if (renderer) {
+      chart = renderer(options, chart);
+    }
+
+    $elem.highcharts(chart);
+
+    return '';
   }
 
-  if (renderer) {
-    chart = renderer(options, chart);
+  #rgba(rgb, a) {
+    return 'rgba(' + rgb.join(',') + ',' + a + ')';
   }
-
-  $elem.highcharts(chart);
-
-  return '';
 }
 
 function some(val) {
