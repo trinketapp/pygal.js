@@ -9,6 +9,8 @@ var COLORS = [
 
 var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke', 'x_labels'];
 
+const some = (val) => typeof val !== "undefined";
+
 class Chart {
   constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels }) {
     var options = {};
@@ -146,10 +148,6 @@ class Chart {
   #rgba(rgb, a) {
     return 'rgba(' + rgb.join(',') + ',' + a + ')';
   }
-}
-
-function some(val) {
-  return val && val !== Sk.builtin.none.none$;
 }
 
 function kwfunc(impl, kwargs) {
