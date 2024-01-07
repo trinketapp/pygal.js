@@ -14,20 +14,20 @@ const some = (val) => typeof val !== "undefined";
 class Chart {
   constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels } = {}) {
     const options = {};
-    if (some(title)) options.title = title.v;
-    if (some(width)) options.width = width.v;
-    if (some(height)) options.height = height.v;
+    if (some(title)) options.title = title;
+    if (some(width)) options.width = width;
+    if (some(height)) options.height = height;
     if (some(range)) options.range = {
-      min: range.v[0].v,
-      max: range.v[1].v
+      min: range[0],
+      max: range[1],
     };
-    if (some(include_x_axis)) options.include_x_axis = include_x_axis.v;
-    if (some(x_title)) options.x_title = x_title.v;
-    if (some(y_title)) options.y_title = y_title.v;
-    if (some(title_font_size)) options.title_font_size = title_font_size.v;
-    if (some(fill)) options.fill = fill.v;
-    if (some(stroke)) options.stroke = stroke.v;
-    if (some(x_labels)) options.x_labels = x_labels.v;
+    if (some(include_x_axis)) options.include_x_axis = include_x_axis;
+    if (some(x_title)) options.x_title = x_title;
+    if (some(y_title)) options.y_title = y_title;
+    if (some(title_font_size)) options.title_font_size = title_font_size;
+    if (some(fill)) options.fill = fill;
+    if (some(stroke)) options.stroke = stroke;
+    if (some(x_labels)) options.x_labels = x_labels;
 
     this._options = options;
     this._data = [];
