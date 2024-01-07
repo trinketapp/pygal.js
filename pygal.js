@@ -1,3 +1,7 @@
+export const config = {
+  domOutput: () => { throw new Error("The config.domOutput function has not been set for pygal."); },
+};
+
 const COLORS = [
   [255, 89, 149],  [182, 227, 84],  [254, 237, 108], [140, 237, 255],
   [158, 111, 254], [137, 156, 161], [248, 248, 242], [191, 70, 70],
@@ -45,7 +49,7 @@ class Chart {
 
   render(renderer) {
     const options = this._options;
-    const $elem = Sk.domOutput('<div></div>');
+    const $elem = config.domOutput('<div></div>');
     const title_style = {
       color: '#FFFFFF'
     };
@@ -63,8 +67,8 @@ class Chart {
       });
     }
 
-    const defaultWidth  = Sk.availableWidth || 400;
-    const defaultHeight = Math.min(defaultWidth, Sk.availableHeight || 300);
+    const defaultWidth  = config.availableWidth || 400;
+    const defaultHeight = Math.min(defaultWidth, config.availableHeight || 300);
 
     const chart = {
       chart: {
