@@ -150,33 +150,6 @@ class Chart {
   }
 }
 
-function kwfunc(impl, kwargs) {
-  if (kwargs && kwargs.length) {
-    impl.co_varnames = ['__self__'].concat(kwargs);
-    impl.$defaults = new Array(kwargs.length).fill(Sk.builtin.none.none$);
-  }
-  return new Sk.builtin.func(impl);
-}
-
-function createChartType(type, renderer) {
-  mod[type] = Sk.misceval.buildClass(mod, function($gbl, $loc) {
-    $loc.render = new Sk.builtin.func(function(self) {
-      var i, key, val;
-
-      for (i = 0; i < KWARGS.length; i++) {
-        key = KWARGS[i];
-        val = self.tp$getattr(key);
-
-        if (typeof val !== "undefined") {
-          self.instance._options[key] = Sk.ffi.remapToJs(val);
-        }
-      }
-
-      return self.instance.render(renderer);
-    });
-  }, type, []);
-}
-
 export class Line extends Chart {
   constructor() {
     this.renderer = (options, chart) => {
