@@ -49,7 +49,7 @@ class Chart {
 
   render(renderer) {
     const options = this._options;
-    const $elem = config.domOutput('<div></div>');
+    const elem = config.domOutput('<div></div>');
     const title_style = {
       color: '#FFFFFF'
     };
@@ -140,7 +140,7 @@ class Chart {
       chart = renderer(options, chart);
     }
 
-    $elem.highcharts(chart);
+    Highcharts.chart(elem, chart);
 
     return '';
   }
