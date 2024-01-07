@@ -27,6 +27,8 @@ Pygal.js brings together the above projects to provide beatiful charts
 created using python syntax all rendered in the browser with no server
 necessary. Cool. See it in action on [trinket.io](https://trinket.io/charts).
 
+New: You can now use pygal.js as a plain JavaScript file. See below for more details.
+
 ## Getting Started
 
 Install JS dependencies with ```bower install```
@@ -64,6 +66,31 @@ due to the cross-site script URLs. "python -m SimpleHTTPServer" is one good
 way.
 
 Point your browser to your html page and have fun!
+
+## Plain JavaScript file
+
+You can now use Pygal as a plain JavaScript file if you want to call it from
+JavaScript directly, or if you are using another Python interpreter such as
+[Pyodide](https://pyodide.org/en/stable/).
+
+The API should be identical except there is no longer an `Sk` global and you
+will need to set the `domOutput` function and `availableWidth` and `availableHeight`
+values on the `pygal.config` object:
+
+```javascript
+import * as pygal from "./pygal.js"
+
+pygal.config.domOutput = (html) => { ... }
+pygal.config.availableWidth = 600;
+pygal.config.availableHeight = 400;
+```
+
+The plain JavaScript version also no longer requires jQuery. See demo-pyodide.html
+for a working example using the plain JavaScript import.
+
+Note that the plain JavaScript file is written for ES6 so you may need to
+transpile it and add a polyfill for `Array.fill` if you want to support older
+browsers.
 
 ## Opportunities for contribution
 
