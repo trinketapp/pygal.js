@@ -1,4 +1,4 @@
-var COLORS = [
+const COLORS = [
   [255, 89, 149],  [182, 227, 84],  [254, 237, 108], [140, 237, 255],
   [158, 111, 254], [137, 156, 161], [248, 248, 242], [191, 70, 70],
   [81, 96, 131],   [249, 38, 114],  [130, 180, 20],  [253, 151, 31],
@@ -9,7 +9,7 @@ const some = (val) => typeof val !== "undefined";
 
 class Chart {
   constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels }) {
-    var options = {};
+    const options = {};
     if (some(title)) options.title = title.v;
     if (some(width)) options.width = width.v;
     if (some(height)) options.height = height.v;
@@ -44,16 +44,16 @@ class Chart {
   }
 
   render(renderer) {
-    var options = this._options;
-    var $elem = Sk.domOutput('<div></div>');
-    var title_style = {
+    const options = this._options;
+    const $elem = Sk.domOutput('<div></div>');
+    const title_style = {
       color: '#FFFFFF'
     };
     if (options.title_font_size) {
       title_style['font-size'] = options.title_font_size + 'px';
     }
-    var xPlotLines = [];
-    var yPlotLines = [];
+    const xPlotLines = [];
+    const yPlotLines = [];
 
     if (options.range) {
       yPlotLines.push({
@@ -63,10 +63,10 @@ class Chart {
       });
     }
 
-    var defaultWidth  = Sk.availableWidth || 400;
-    var defaultHeight = Math.min(defaultWidth, Sk.availableHeight || 300);
+    const defaultWidth  = Sk.availableWidth || 400;
+    const defaultHeight = Math.min(defaultWidth, Sk.availableHeight || 300);
 
-    var chart = {
+    const chart = {
       chart: {
         width : options.width  || defaultWidth,
         height: options.height || defaultHeight,
@@ -127,7 +127,7 @@ class Chart {
       series: this._data
     };
 
-    for(var i = 0; i < chart.series.length; i++) {
+    for(let i = 0; i < chart.series.length; i++) {
       chart.series[i].legendIndex = chart.series.length - i;
       chart.series[i].index = chart.series.length - i;
     }
@@ -251,7 +251,7 @@ export class Radar extends Chart {
         gridLineDashStyle : 'ShortDash',
         gridLineColor: '#DDD'
       }
-      for(var i = 0; i < chart.series.length; i++) {
+      for(let i = 0; i < chart.series.length; i++) {
         chart.series[i].pointPlacement = 'on';
       }
 
@@ -264,11 +264,11 @@ export class Pie extends Chart {
   constructor() {
     this.renderer = (options, chart) => {
       chart.chart.type = 'pie';
-      var slices       = [];
-      var breakdown    = [];
-      var useBreakdown = false;
-      for(var i = 0; i < chart.series.length; i++) {
-        var slice = chart.series[i];
+      const slices       = [];
+      const breakdown    = [];
+      const useBreakdown = false;
+      for(let i = 0; i < chart.series.length; i++) {
+        const slice = chart.series[i];
         if (slice.data.length === 1) {
           slices.unshift({
             name        : slice.name,
@@ -286,10 +286,10 @@ export class Pie extends Chart {
         }
         else {
           useBreakdown = true;
-          var sum = 0;
-          var maxDecimal = 0;
-          for(var j = 0; j < slice.data.length; j++) {
-            var parts = slice.data[j].toString().split('.');
+          const sum = 0;
+          const maxDecimal = 0;
+          for(let j = 0; j < slice.data.length; j++) {
+            const parts = slice.data[j].toString().split('.');
             maxDecimal = Math.max(maxDecimal, parts[1] ? parts[1].length : 0);
             sum += slice.data[j];
             breakdown.unshift({
