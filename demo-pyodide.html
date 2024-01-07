@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Pyodide</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+  </head>
+  <body>
+    <h3>Try This</h3>
+
+    <textarea id="input" cols="80" rows="30">
+
+import pygal
+
+# Our data is a list of series.
+# Each series is a list with a label and a list of data points
+data = [["Firefox", [None, None, 0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1]],
+        ["Chrome",  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3]],
+        ["IE",      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1]],
+        ["Others",  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5]]]
+
+
+# Make a Pygal chart
+stackedline_chart = pygal.StackedLine(fill=True)
+stackedline_chart.title = "Browser usage evolution (in %)"
+stackedline_chart.x_labels = map(str, range(2002, 2013))
+
+# For each series in our data, add label and data points
+for label, data_points in data:
+    stackedline_chart.add(label, data_points)
+
+# Render the chart
+stackedline_chart.render()
+
+# Example modified from the pygal.org documentation
+    </textarea>
+
+    <br/>
+    <button id="run" disabled>Run</button>
+
+    <pre id="info">Loading pyodide...</pre>
+    <div id="visual" style="width: fit-content;"></div>
+
+    <script type="module">
+      import * as pygal from "./pygal.js";
+
+      pygal.config.domOutput = (html) => {
+        visual.innerHTML = html;
+        return visual.firstChild;
+      };
+
+      const runButton = document.getElementById("run");
+      const input = document.getElementById("input");
+      const info = document.getElementById("info");
+      const visual = document.getElementById("visual");
+
+      let pyodide;
+
+      const main = async () => {
+        pyodide = await loadPyodide();
+        await pyodide.registerJsModule("pygal", { ...pygal });
+
+        runButton.disabled = false;
+        info.innerHTML = "";
+      };
+
+      const run = async () => {
+        try {
+          await pyodide.loadPackagesFromImports(input.value);
+          await pyodide.runPython(input.value);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      main();
+      runButton.addEventListener("click", run);
+    </script>
+  </body>
+</html>
