@@ -8,9 +8,9 @@ charting library driven by [Skulpt](http://www.skulpt.org/) and
 ## What is Skulpt?
 
 > Python. Client side.
-> 
+>
 > Skulpt is an entirely in-browser implementation of Python.
-> 
+>
 > No preprocessing, plugins, or server-side support required, just write Python and reload.
 
 ## What is pygal?
@@ -25,13 +25,13 @@ charting library driven by [Skulpt](http://www.skulpt.org/) and
 
 Pygal.js brings together the above projects to provide beatiful charts
 created using python syntax all rendered in the browser with no server
-necessary. Cool.  See it in action on [trinket.io](https://trinket.io/charts).
+necessary. Cool. See it in action on [trinket.io](https://trinket.io/charts).
 
 ## Getting Started
 
 Install JS dependencies with ```bower install```
 
-Create a basic html page similar to DEMO.html.
+Create a basic html page similar to demo-skulpt.html.
 
 Add the pygal.js specific Skulpt configuration options
 
@@ -59,7 +59,7 @@ Sk.availableWidth = 600;
 Sk.availableHeight = 400;
 ```
 
-Note: If you use demo.html, you may need to serve it through an HTTP Server
+Note: If you use demo-skulpt.html, you may need to serve it through an HTTP Server
 due to the cross-site script URLs. "python -m SimpleHTTPServer" is one good
 way.
 
