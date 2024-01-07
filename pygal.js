@@ -1,48 +1,3 @@
-function fill(arr, val) {
-  if (Array.prototype.fill) {
-    return Array.prototype.fill.bind(arr)(val, arguments[2], arguments[3]);
-  }
-
-  // Steps 1-2.
-  if (arr == null) {
-    throw new TypeError('arr is null or not defined');
-  }
-
-  var O = Object(arr);
-
-  // Steps 3-5.
-  var len = O.length >>> 0;
-
-  // Steps 6-7.
-  var start = arguments[2];
-  var relativeStart = start >> 0;
-
-  // Step 8.
-  var k = relativeStart < 0 ?
-    Math.max(len + relativeStart, 0) :
-    Math.min(relativeStart, len);
-
-  // Steps 9-10.
-  var end = arguments[3];
-  var relativeEnd = end === undefined ?
-    len : end >> 0;
-
-  // Step 11.
-  var final = relativeEnd < 0 ?
-    Math.max(len + relativeEnd, 0) :
-    Math.min(relativeEnd, len);
-
-  // Step 12.
-  while (k < final) {
-    O[k] = value;
-    k++;
-  }
-
-  // Step 13.
-  return O;
-}
-
-
 var mod = {};
 
 var COLORS = [
@@ -182,7 +137,7 @@ function some(val) {
 function kwfunc(impl, kwargs) {
   if (kwargs && kwargs.length) {
     impl.co_varnames = ['__self__'].concat(kwargs);
-    impl.$defaults = fill(new Array(kwargs.length), Sk.builtin.none.none$);
+    impl.$defaults = new Array(kwargs.length).fill(Sk.builtin.none.none$);
   }
   return new Sk.builtin.func(impl);
 }
