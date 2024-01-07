@@ -47,7 +47,7 @@ class Chart {
     return '';
   }
 
-  render(renderer) {
+  render() {
     const options = this._options;
     const elem = config.domOutput('<div></div>');
     const title_style = {
@@ -70,7 +70,7 @@ class Chart {
     const defaultWidth  = config.availableWidth || 400;
     const defaultHeight = Math.min(defaultWidth, config.availableHeight || 300);
 
-    const chart = {
+    let chart = {
       chart: {
         width : options.width  || defaultWidth,
         height: options.height || defaultHeight,
@@ -136,8 +136,8 @@ class Chart {
       chart.series[i].index = chart.series.length - i;
     }
 
-    if (renderer) {
-      chart = renderer(options, chart);
+    if (this.renderer) {
+      chart = this.renderer(options, chart);
     }
 
     Highcharts.chart(elem, chart);
