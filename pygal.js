@@ -8,7 +8,7 @@ const COLORS = [
 const some = (val) => typeof val !== "undefined";
 
 class Chart {
-  constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels }) {
+  constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels } = {}) {
     const options = {};
     if (some(title)) options.title = title.v;
     if (some(width)) options.width = width.v;
