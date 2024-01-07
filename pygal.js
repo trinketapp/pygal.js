@@ -10,7 +10,23 @@ var COLORS = [
 var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke', 'x_labels'];
 
 class Chart {
-  constructor(options) {
+  constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels }) {
+    var options = {};
+    if (some(title)) options.title = title.v;
+    if (some(width)) options.width = width.v;
+    if (some(height)) options.height = height.v;
+    if (some(range)) options.range = {
+      min: range.v[0].v,
+      max: range.v[1].v
+    };
+    if (some(include_x_axis)) options.include_x_axis = include_x_axis.v;
+    if (some(x_title)) options.x_title = x_title.v;
+    if (some(y_title)) options.y_title = y_title.v;
+    if (some(title_font_size)) options.title_font_size = title_font_size.v;
+    if (some(fill)) options.fill = fill.v;
+    if (some(stroke)) options.stroke = stroke.v;
+    if (some(x_labels)) options.x_labels = x_labels.v;
+
     this._options = options;
     this._data = [];
   }
@@ -146,28 +162,6 @@ function kwfunc(impl, kwargs) {
 
 function createChartType(type, renderer) {
   mod[type] = Sk.misceval.buildClass(mod, function($gbl, $loc) {
-    $loc.__init__ = kwfunc(
-      function(self, title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels) {
-        var options = {};
-        if (some(title)) options.title = title.v;
-        if (some(width)) options.width = width.v;
-        if (some(height)) options.height = height.v;
-        if (some(range)) options.range = {
-          min: range.v[0].v,
-          max: range.v[1].v
-        };
-        if (some(include_x_axis)) options.include_x_axis = include_x_axis.v;
-        if (some(x_title)) options.x_title = x_title.v;
-        if (some(y_title)) options.y_title = y_title.v;
-        if (some(title_font_size)) options.title_font_size = title_font_size.v;
-        if (some(fill)) options.fill = fill.v;
-        if (some(stroke)) options.stroke = stroke.v;
-        if (some(x_labels)) options.x_labels = x_labels.v;
-
-        self.instance = new Chart(options);
-      }, KWARGS
-    );
-
     $loc.add = new Sk.builtin.func(function(self, label, values) {
       values = (values instanceof Sk.builtin.list)
         ? Sk.ffi.remapToJs(values)
