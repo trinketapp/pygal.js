@@ -35,7 +35,7 @@ class Chart {
     this._data.unshift({
       name: label,
       color: this.#rgba(COLORS[this._data.length%COLORS.length], 0.75),
-      data: values,
+      data: [...values],
       marker : {
         symbol: 'circle'
       },
@@ -162,14 +162,6 @@ function kwfunc(impl, kwargs) {
 
 function createChartType(type, renderer) {
   mod[type] = Sk.misceval.buildClass(mod, function($gbl, $loc) {
-    $loc.add = new Sk.builtin.func(function(self, label, values) {
-      values = (values instanceof Sk.builtin.list)
-        ? Sk.ffi.remapToJs(values)
-        : [values.v];
-
-      return self.instance.add(label.v, values);
-    });
-
     $loc.render = new Sk.builtin.func(function(self) {
       var i, key, val;
 
