@@ -1,13 +1,9 @@
-var mod = {};
-
 var COLORS = [
   [255, 89, 149],  [182, 227, 84],  [254, 237, 108], [140, 237, 255],
   [158, 111, 254], [137, 156, 161], [248, 248, 242], [191, 70, 70],
   [81, 96, 131],   [249, 38, 114],  [130, 180, 20],  [253, 151, 31],
   [86, 194, 214],  [128, 131, 132], [140, 84, 254],  [70, 84, 87]
 ];
-
-var KWARGS = ['title', 'width', 'height', 'range', 'include_x_axis', 'x_title', 'y_title', 'title_font_size', 'fill', 'stroke', 'x_labels'];
 
 const some = (val) => typeof val !== "undefined";
 
