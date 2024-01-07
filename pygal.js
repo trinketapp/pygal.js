@@ -193,154 +193,198 @@ function createChartType(type, renderer) {
   }, type, []);
 }
 
-createChartType('Line', function(options, chart) {
-  chart.chart.type = options.fill ? 'area' : 'line';
-  return chart;
-});
-createChartType('StackedLine', function(options, chart) {
-  chart.chart.type = options.fill ? 'area' : 'line';
-  chart.plotOptions = {
-    area : {
-      stacking : 'percent'
-    },
-    series : {
-      stacking : 'percent'
-    }
-  };
-  return chart;
-});
-createChartType('Bar', function(options, chart) {
-  chart.chart.type = 'column';
-  return chart;
-});
-createChartType('StackedBar', function(options, chart) {
-  chart.chart.type = 'column';
-  chart.plotOptions = {
-    column : {
-      stacking: 'percent'
-    }
-  };
-  return chart;
-});
-createChartType('HorizontalBar', function(options, chart) {
-  chart.chart.type = 'bar';
-  return chart;
-});
-createChartType('StackedHorizontalBar', function(options, chart) {
-  chart.chart.type = 'bar';
-  chart.plotOptions = {
-    bar : {
-      stacking: 'percent'
-    }
-  };
-  return chart;
-});
-createChartType('XY', function(options, chart) {
-  if (options.stroke === false) {
-    chart.chart.type = 'scatter'
+export class Line extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = options.fill ? 'area' : 'line';
+      return chart;
+    };
   }
-  else {
-    chart.chart.type = options.fill ? 'area' : 'line';
-  }
-  chart.xAxis.labels.enabled = true;
+}
 
-  return chart;
-});
-createChartType('Radar', function(options, chart) {
-  chart.chart.polar = true;
-  chart.chart.type  = 'line';
-  chart.xAxis = {
-    categories: options.x_labels,
-    tickmarkPlacement: 'on',
-    lineWidth: 0
+export class StackedLine extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = options.fill ? 'area' : 'line';
+      chart.plotOptions = {
+        area : {
+          stacking : 'percent'
+        },
+        series : {
+          stacking : 'percent'
+        }
+      };
+      return chart;
+    };
   }
-  chart.yAxis = {
-    gridLineInterpolation: 'polygon',
-    lineWidth: 0,
-    min: 0,
-    gridLineDashStyle : 'ShortDash',
-    gridLineColor: '#DDD'
-  }
-  for(var i = 0; i < chart.series.length; i++) {
-    chart.series[i].pointPlacement = 'on';
-  }
+}
 
-  return chart;
-});
-createChartType('Pie', function(options, chart) {
-  chart.chart.type = 'pie';
-  var slices       = [];
-  var breakdown    = [];
-  var useBreakdown = false;
-  for(var i = 0; i < chart.series.length; i++) {
-    var slice = chart.series[i];
-    if (slice.data.length === 1) {
-      slices.unshift({
-        name        : slice.name,
-        color       : slice.color,
-        borderColor : slice.color,
-        legendIndex : slice.legendIndex,
-        y           : slice.data[0]
-      });
-      breakdown.unshift({
-        name  : slice.name,
-        color : slice.color,
-        borderColor : slice.color,
-        y     : slice.data[0]
-      });
-    }
-    else {
-      useBreakdown = true;
-      var sum = 0;
-      var maxDecimal = 0;
-      for(var j = 0; j < slice.data.length; j++) {
-        var parts = slice.data[j].toString().split('.');
-        maxDecimal = Math.max(maxDecimal, parts[1] ? parts[1].length : 0);
-        sum += slice.data[j];
-        breakdown.unshift({
-          name: slice.name,
-          color: 'rgba(0,0,0,0)',
-          borderColor : slice.color,
-          y: slice.data[j]
+export class Bar extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = 'column';
+      return chart;
+    };
+  }
+}
+
+export class StackedBar extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = 'column';
+      chart.plotOptions = {
+        column : {
+          stacking: 'percent'
+        }
+      };
+      return chart;
+    };
+  }
+}
+
+export class HorizontalBar extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = 'bar';
+      return chart;
+    };
+  }
+}
+
+export class StackedHorizontalBar extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = 'bar';
+      chart.plotOptions = {
+        bar : {
+          stacking: 'percent'
+        }
+      };
+      return chart;
+    };
+  }
+}
+
+export class XY extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      if (options.stroke === false) {
+        chart.chart.type = 'scatter'
+      }
+      else {
+        chart.chart.type = options.fill ? 'area' : 'line';
+      }
+      chart.xAxis.labels.enabled = true;
+
+      return chart;
+    };
+  }
+}
+
+export class Radar extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.polar = true;
+      chart.chart.type  = 'line';
+      chart.xAxis = {
+        categories: options.x_labels,
+        tickmarkPlacement: 'on',
+        lineWidth: 0
+      }
+      chart.yAxis = {
+        gridLineInterpolation: 'polygon',
+        lineWidth: 0,
+        min: 0,
+        gridLineDashStyle : 'ShortDash',
+        gridLineColor: '#DDD'
+      }
+      for(var i = 0; i < chart.series.length; i++) {
+        chart.series[i].pointPlacement = 'on';
+      }
+
+      return chart;
+    };
+  }
+}
+
+export class Pie extends Chart {
+  constructor() {
+    this.renderer = (options, chart) => {
+      chart.chart.type = 'pie';
+      var slices       = [];
+      var breakdown    = [];
+      var useBreakdown = false;
+      for(var i = 0; i < chart.series.length; i++) {
+        var slice = chart.series[i];
+        if (slice.data.length === 1) {
+          slices.unshift({
+            name        : slice.name,
+            color       : slice.color,
+            borderColor : slice.color,
+            legendIndex : slice.legendIndex,
+            y           : slice.data[0]
+          });
+          breakdown.unshift({
+            name  : slice.name,
+            color : slice.color,
+            borderColor : slice.color,
+            y     : slice.data[0]
+          });
+        }
+        else {
+          useBreakdown = true;
+          var sum = 0;
+          var maxDecimal = 0;
+          for(var j = 0; j < slice.data.length; j++) {
+            var parts = slice.data[j].toString().split('.');
+            maxDecimal = Math.max(maxDecimal, parts[1] ? parts[1].length : 0);
+            sum += slice.data[j];
+            breakdown.unshift({
+              name: slice.name,
+              color: 'rgba(0,0,0,0)',
+              borderColor : slice.color,
+              y: slice.data[j]
+            });
+          }
+          slices.unshift({
+            name        : slice.name,
+            color       : slice.color,
+            borderColor : slice.color,
+            legendIndex : slice.legendIndex,
+            y           : parseFloat(sum.toFixed(maxDecimal))
+          });
+        }
+      }
+      chart.tooltip = {
+        formatter: function() {
+            return this.key + ': ' + this.y;
+          }
+      };
+      chart.plotOptions = {
+        pie: {
+          allowPointSelect: !useBreakdown,
+          cursor: useBreakdown ? null : 'pointer',
+          shadow: false,
+          center: ['50%', '50%'],
+          dataLabels: {
+            enabled: false
+          }
+        }
+      };
+      chart.series = [{
+        name: ' ',
+        data: slices,
+        showInLegend: true
+      }];
+      if (useBreakdown) {
+        chart.series.push({
+          name: ' ',
+          data: breakdown,
+          innerSize: '90%',
+          showInLegend: false
         });
       }
-      slices.unshift({
-        name        : slice.name,
-        color       : slice.color,
-        borderColor : slice.color,
-        legendIndex : slice.legendIndex,
-        y           : parseFloat(sum.toFixed(maxDecimal))
-      });
-    }
+      return chart;
+    };
   }
-  chart.tooltip = {
-    formatter: function() {
-        return this.key + ': ' + this.y;
-      }
-  };
-  chart.plotOptions = {
-    pie: {
-      allowPointSelect: !useBreakdown,
-      cursor: useBreakdown ? null : 'pointer',
-      shadow: false,
-      center: ['50%', '50%'],
-      dataLabels: {
-        enabled: false
-      }
-    }
-  };
-  chart.series = [{
-    name: ' ',
-    data: slices,
-    showInLegend: true
-  }];
-  if (useBreakdown) {
-    chart.series.push({
-      name: ' ',
-      data: breakdown,
-      innerSize: '90%',
-      showInLegend: false
-    });
-  }
-  return chart;
-});
+}
