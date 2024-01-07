@@ -10,24 +10,25 @@ const COLORS = [
 ];
 
 const some = (val) => typeof val !== "undefined";
+const toJs = (val) => val?.toJs ? val.toJs() : val;
 
 class Chart {
   constructor({ title, width, height, range, include_x_axis, x_title, y_title, title_font_size, fill, stroke, x_labels } = {}) {
     const options = {};
-    if (some(title)) options.title = title;
-    if (some(width)) options.width = width;
-    if (some(height)) options.height = height;
+    if (some(title)) options.title = toJs(title);
+    if (some(width)) options.width = toJs(width);
+    if (some(height)) options.height = toJs(height);
     if (some(range)) options.range = {
-      min: range[0],
-      max: range[1],
+      min: toJs(range)[0],
+      max: toJs(range)[1],
     };
-    if (some(include_x_axis)) options.include_x_axis = include_x_axis;
-    if (some(x_title)) options.x_title = x_title;
-    if (some(y_title)) options.y_title = y_title;
-    if (some(title_font_size)) options.title_font_size = title_font_size;
-    if (some(fill)) options.fill = fill;
-    if (some(stroke)) options.stroke = stroke;
-    if (some(x_labels)) options.x_labels = x_labels;
+    if (some(include_x_axis)) options.include_x_axis = toJs(include_x_axis);
+    if (some(x_title)) options.x_title = toJs(x_title);
+    if (some(y_title)) options.y_title = toJs(y_title);
+    if (some(title_font_size)) options.title_font_size = toJs(title_font_size);
+    if (some(fill)) options.fill = toJs(fill);
+    if (some(stroke)) options.stroke = toJs(stroke);
+    if (some(x_labels)) options.x_labels = toJs(x_labels);
 
     this._options = options;
     this._data = [];
@@ -35,9 +36,9 @@ class Chart {
 
   add(label, values) {
     this._data.unshift({
-      name: label,
+      name: toJs(label),
       color: this.#rgba(COLORS[this._data.length%COLORS.length], 0.75),
-      data: [...values],
+      data: [...toJs(values)],
       marker : {
         symbol: 'circle'
       },
@@ -154,7 +155,7 @@ class _Line extends Chart {
   constructor(...args) {
     super(...args);
     this.renderer = (options, chart) => {
-      chart.chart.type = options.fill ? 'area' : 'line';
+      chart.chart.type = toJs(options.fill) ? 'area' : 'line';
       return chart;
     };
   }
@@ -165,7 +166,7 @@ class _StackedLine extends Chart {
   constructor(...args) {
     super(...args);
     this.renderer = (options, chart) => {
-      chart.chart.type = options.fill ? 'area' : 'line';
+      chart.chart.type = toJs(options.fill) ? 'area' : 'line';
       chart.plotOptions = {
         area : {
           stacking : 'percent'
@@ -238,11 +239,11 @@ class _XY extends Chart {
   constructor(...args) {
     super(...args);
     this.renderer = (options, chart) => {
-      if (options.stroke === false) {
+      if (toJs(options.stroke) === false) {
         chart.chart.type = 'scatter'
       }
       else {
-        chart.chart.type = options.fill ? 'area' : 'line';
+        chart.chart.type = toJs(options.fill) ? 'area' : 'line';
       }
       chart.xAxis.labels.enabled = true;
 
@@ -259,7 +260,7 @@ class _Radar extends Chart {
       chart.chart.polar = true;
       chart.chart.type  = 'line';
       chart.xAxis = {
-        categories: options.x_labels,
+        categories: toJs(options.x_labels),
         tickmarkPlacement: 'on',
         lineWidth: 0
       }
