@@ -162,7 +162,7 @@ class _Line extends Chart {
     };
   }
 }
-export const Line = () => new _Line();
+export const Line = (...args) => new _Line(...args);
 
 class _StackedLine extends Chart {
   constructor(...args) {
@@ -181,7 +181,7 @@ class _StackedLine extends Chart {
     };
   }
 }
-export const StackedLine = () => new _StackedLine();
+export const StackedLine = (...args) => new _StackedLine(...args);
 
 class _Bar extends Chart {
   constructor(...args) {
@@ -192,7 +192,7 @@ class _Bar extends Chart {
     };
   }
 }
-export const Bar = () => new _Bar();
+export const Bar = (...args) => new _Bar(...args);
 
 class _StackedBar extends Chart {
   constructor(...args) {
@@ -208,7 +208,7 @@ class _StackedBar extends Chart {
     };
   }
 }
-export const StackedBar = () => new _StackedBar();
+export const StackedBar = (...args) => new _StackedBar(...args);
 
 class _HorizontalBar extends Chart {
   constructor(...args) {
@@ -219,7 +219,7 @@ class _HorizontalBar extends Chart {
     };
   }
 }
-export const HorizontalBar = () => new _HorizontalBar();
+export const HorizontalBar = (...args) => new _HorizontalBar(...args);
 
 class _StackedHorizontalBar extends Chart {
   constructor(...args) {
@@ -235,7 +235,7 @@ class _StackedHorizontalBar extends Chart {
     };
   }
 }
-export const StackedHorizontalBar = () => new _StackedHorizontalBar();
+export const StackedHorizontalBar = (...args) => new _StackedHorizontalBar(...args);
 
 class _XY extends Chart {
   constructor(...args) {
@@ -253,7 +253,7 @@ class _XY extends Chart {
     };
   }
 }
-export const XY = () => new _XY();
+export const XY = (...args) => new _XY(...args);
 
 class _Radar extends Chart {
   constructor(...args) {
@@ -281,7 +281,7 @@ class _Radar extends Chart {
     };
   }
 }
-export const Radar = () => new _Radar();
+export const Radar = (...args) => new _Radar(...args);
 
 class _Pie extends Chart {
   constructor(...args) {
@@ -365,4 +365,4 @@ class _Pie extends Chart {
     };
   }
 }
-export const Pie = () => new _Pie();
+export const Pie = (...args) => new _Pie(...args);
