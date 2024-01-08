@@ -148,6 +148,30 @@ class Chart {
     return '';
   }
 
+  get title()              { return this._options.title; }
+  get width()              { return this._options.width; }
+  get height()             { return this._options.height; }
+  get range()              { return this._options.range; }
+  get include_x_axis()     { return this._options.include_x_axis; }
+  get x_title()            { return this._options.x_title; }
+  get y_title()            { return this._options.y_title; }
+  get title_font_size()    { return this._options.title_font_size; }
+  get fill()               { return this._options.fill; }
+  get stroke()             { return this._options.stroke; }
+  get x_labels()           { return this._options.x_labels; }
+
+  set title(val)           { this._options.title = toJs(val); }
+  set width(val)           { this._options.width = toJs(val); }
+  set height(val)          { this._options.height = toJs(val); }
+  set range(val)           { this._options.range = toJs(val); }
+  set include_x_axis(val)  { this._options.include_x_axis = toJs(val); }
+  set x_title(val)         { this._options.x_title = toJs(val); }
+  set y_title(val)         { this._options.y_title = toJs(val); }
+  set title_font_size(val) { this._options.title_font_size = toJs(val); }
+  set fill(val)            { this._options.fill = toJs(val); }
+  set stroke(val)          { this._options.stroke = toJs(val); }
+  set x_labels(val)        { this._options.x_labels = toJs(val); }
+
   #rgba(rgb, a) {
     return 'rgba(' + rgb.join(',') + ',' + a + ')';
   }
