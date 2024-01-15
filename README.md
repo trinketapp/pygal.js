@@ -73,14 +73,14 @@ You can now use Pygal as a plain JavaScript file if you want to call it from
 JavaScript directly, or if you are using another Python interpreter such as
 [Pyodide](https://pyodide.org/en/stable/).
 
-The API should be identical except there is no longer an `Sk` global and you
-will need to set the `domOutput` function and `availableWidth` and `availableHeight`
+The API is similar except there is no longer an `Sk` global. Instead, you will
+need to set a `renderChart` function and `availableWidth` and `availableHeight`
 values on the `pygal.config` object:
 
 ```javascript
 import * as pygal from "./pygal.js"
 
-pygal.config.domOutput = (html) => { ... }
+pygal.config.renderChart = (chart) => Highcharts.chart(myElement, chart);
 pygal.config.availableWidth = 600;
 pygal.config.availableHeight = 400;
 ```

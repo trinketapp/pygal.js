@@ -1,5 +1,5 @@
 export const config = {
-  domOutput: () => { throw new Error("The config.domOutput function has not been set for pygal."); },
+  renderChart: (chart) => { throw new Error("The config.renderChart function has not been set for pygal."); }
 };
 
 const COLORS = [
@@ -52,7 +52,6 @@ class Chart {
 
   render() {
     const options = this._options;
-    const elem = config.domOutput('<div></div>');
     const title_style = {
       color: '#FFFFFF'
     };
@@ -143,7 +142,7 @@ class Chart {
       chart = this.renderer(options, chart);
     }
 
-    Highcharts.chart(elem, chart);
+    config.renderChart(chart);
 
     return '';
   }

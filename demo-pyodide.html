@@ -45,10 +45,7 @@ stackedline_chart.render()
     <script type="module">
       import * as pygal from "./pygal.js";
 
-      pygal.config.domOutput = (html) => {
-        visual.innerHTML = html;
-        return visual.firstChild;
-      };
+      pygal.config.renderChart = (chart) => Highcharts.chart(visual, chart);
 
       const runButton = document.getElementById("run");
       const input = document.getElementById("input");
