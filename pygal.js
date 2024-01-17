@@ -1,5 +1,7 @@
 export const config = {
-  renderChart: (chart) => { throw new Error("The config.renderChart function has not been set for pygal."); }
+  renderChart: (chart) => { throw new Error("The config.renderChart function has not been set for pygal."); },
+  availableWidth: 400,
+  availableHeight: 300,
 };
 
 const COLORS = [
@@ -69,8 +71,8 @@ class Chart {
       });
     }
 
-    const defaultWidth  = config.availableWidth || 400;
-    const defaultHeight = Math.min(defaultWidth, config.availableHeight || 300);
+    const defaultWidth  = config.availableWidth;
+    const defaultHeight = Math.min(defaultWidth, config.availableHeight);
 
     let chart = {
       chart: {
